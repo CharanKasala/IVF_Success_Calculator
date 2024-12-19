@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+
+<body>
+    {% if success_rate %}
+    <p>Success Rate for IVF based on your entries is : </p>
+    <p style="color:red;"><b>{{success_rate}}</b></p>
+    {% elif error_message %}
+    <h4>{{error_message}}</h4>
+    {% endif %}
+    <a href="{% url 'index' %}">Go to Home Page</a>
+</body>

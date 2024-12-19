@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+
+<head>
+    <title>IVF SUCCESS CALCULATOR</title>
+    <h2>IVF SUCCESS CALCULATOR</h2>
+</head>
+
+<body>
+
+    <form method="post">
+        {% csrf_token %}
+        <br>
+
+        <label for="age">Age</label>
+        <input type="number" name="age" id="age" min="20" max="50" required>
+        <br>
+        <br>
+        <label for="weight">Weight (lb)</label>
+        <input type="number" name="weight" id="weight" min="80" max="300" required>
+        <br>
+        <br>
+        <label for="height_feet">Height (ft) </label>
+        <input type="number" name="height_feet" id="height_feet" min="4" max="6" required>
+        <label for="height_inches">Height (inches) </label>
+        <input type="number" name="height_inches" id="height_inches" min="0" max="11" required>
+        <br>
+        <br>
+
+
+        <label for="own_eggs">Using Own eggs or Donor eggs</label><br>
+        <select name="own_eggs" id="own_eggs" required>
+            <option value="" selected disabled>select</option>
+            <option value="TRUE">Own Eggs</option>
+            <option value="FALSE">Donor Eggs</option>
+        </select>
+        <br>
+        <br>
+
+        <label for="previous_ivf">Used IVF previously?</label><br>
+        <select name="previous_ivf" id="previous_ivf" required>
+            <option value="" selected disabled>select</option>
+            <option value="TRUE"> YES </option>
+            <option value="FALSE"> NO </option>
+            <option value="N/A">N/A</option>
+        </select>
+        <br>
+        <br>
+
+        <label for="no_of_prev_preg">No of Prior Pregnancies you had ?</label>
+        <select name="no_of_prev_preg" id="no_of_prev_preg" required>
+            <option value="" selected disabled>select</option>
+            <option value="0"> 0 </option>
+            <option value="1"> 1 </option>
+            <option value="2+">2+</option>
+        </select>
+        <br>
+        <br>
+
+        <label for="no_of_live_births">No of Prior Live Births you had ?</label>
+        <select name="no_of_live_births" id="no_of_live_births" required>
+            <option value="" selected disabled>select</option>
+
+        </select>
+
+        <br>
+        <h3> Reason for using IVF </h3>
+
+        <label><input type="checkbox" name="male_factor_infertility" value="TRUE" class="group1">Male Factor
+            Infertility
+        </label><br>
+        <label><input type="checkbox" name="endometriosis" value="TRUE" class="group1">Endometrosis </label><br>
+        <label><input type="checkbox" name="tubal_factor" value="TRUE" class="group1">Tubal Factor </label><br>
+        <label><input type="checkbox" name="ovulatory_disorder" value="TRUE" class="group1">Ovulatory disorder
+            (including PCOS)
+        </label><br>
+        <label><input type="checkbox" name="diminished_ovarian_reserve" value="TRUE" class="group1">Diminished
+            ovarian
+            reserve</label><br>
+        <label><input type="checkbox" name="uterine_factor" value="TRUE" class="group1">Uterine Factor </label><br>
+        <label><input type="checkbox" name="other_reason" value="TRUE" class="group1">Other Reason </label><br>
+        <h4> (or)</h4>
+        <label><input type="checkbox" name="unexplained_fertility" value="TRUE" class="group2">Unexplained
+            (Idiopathic)
+            infertility
+        </label>
+        <h4> (or)</h4>
+        <label><input type="checkbox" name="reason_not_known" value="TRUE" class="group3">I don’t know/no reason
+        </label><br>
+        <br>
+
+        <button type="submit">Calculate Success</button>
+        <input type="reset" value="Reset">
+    </form>
+    <!--
+    {% if success_rate %}
+    <h4>IVF Success Rate for IVF based on your entries is : {{success_rate}}</h4>
+    {% elif error_message %}
+    <h4>{{error_message}}</h4>
+    {% endif %}
+    -->
+    <script>
+        const group1 = document.querySelectorAll('.group1');
+        const group2 = document.querySelector('.group2');
+        const group3 = document.querySelector('.group3');
+        const form = document.querySelector('form')
+
+        function disabled_groups(group_name) {
+            if (group_name === 'group1') {
+                group2.checked = false;
+                group3.checked = false;
+            }
+            else if (group_name === 'group2') {
+                for (let i = 0; i < group1.length; i++) {
+                    group1[i].checked = false
+                }
+                group3.checked = false;
+            }
+            else if (group_name === 'group3') {
+                for (let i = 0; i < group1.length; i++) {
+                    group1[i].checked = false
+                }
+                group2.checked = false;
+
+            }
+        }
+
+        for (let i = 0; i < group1.length; i++) {
+            group1[i].addEventListener('change', () => {
+                if (group1[i].checked) {
+                    disabled_groups('group1');
+                }
+            });
+        }
+
+        group2.addEventListener('change', () => {
+            if (group2.checked) {
+                disabled_groups('group2');
+            }
+        });
+
+        group3.addEventListener('change', () => {
+            if (group3.checked) {
+                disabled_groups('group3');
+            }
+        });
+
+        form.addEventListener('submit', function (event) {
+
+            let is_group2_sel = group2.checked;
+            let is_group3_sel = group3.checked;
+            let is_group1_sel = false;
+            for (let i = 0; i < group1.length; i++) {
+                if (group1[i].checked) {
+                    is_group1_sel = true;
+                    break;
+                }
+
+            }
+            console.log("group selection", is_group1_sel, is_group2_sel, is_group3_sel)
+
+            if (!is_group1_sel && !is_group2_sel && !is_group3_sel) {
+                event.preventDefault();
+                alert("Reason for using IVF is required")
+            }
+        });
+
+        let prev_ivf = document.getElementById('previous_ivf');
+        let using_own_eggs = document.getElementById('own_eggs');
+        console.log("prev_ivf", prev_ivf.value)
+        console.log("using_own_eggs", using_own_eggs.value)
+
+        using_own_eggs.addEventListener('change', function () {
+            if (using_own_eggs.value === "FALSE") {
+                prev_ivf.value = "N/A";
+            }
+            else {
+                prev_ivf.value = "";
+            }
+
+        });
+        let prev_preg_num = document.getElementById('no_of_prev_preg');
+        let live_birth_num = document.getElementById('no_of_live_births');
+
+        function update_no_of_live_birth() {
+            const preg = prev_preg_num.value;
+
+            live_birth_num.innerHTML = '<option value="" selected disabled>select</option>'
+
+
+
+            if (preg === "0") {
+                add_option("0");
+            }
+            else if (preg === "1") {
+                add_option("0");
+                add_option("1");
+            }
+            else if (preg === "2+") {
+                add_option("0");
+                add_option("1");
+                add_option("2+");
+            }
+        }
+        function add_option(val) {
+            const option = document.createElement("option");
+            option.value = val
+            option.textContent = val
+            live_birth_num.appendChild(option)
+        }
+
+        prev_preg_num.addEventListener("change", update_no_of_live_birth);
+
+
+    </script>
+
+</body>
