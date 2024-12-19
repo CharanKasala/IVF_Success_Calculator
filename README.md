@@ -34,7 +34,9 @@ once the requirements are installed they you need to run the project
 
 Once the server starts successfully then open the link http://127.0.0.1:8000/ in the browser. This will open the IVF Success Calculator where the user enters the inputs. 
 
-After entering the input values the user will submit the Calculate Success button after which, the calculated success rate is displayed
+After entering the input values the user will submit the Calculate Success button .
+
+Once all the validations are satisfied the success rate is displayed to the user
 
 
 
