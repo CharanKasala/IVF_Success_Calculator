@@ -5,7 +5,7 @@ This is a web applications that calculates IVF success rate based on the inputs 
 ### Prerequisites:
 Python 3.8 or higher
 
-pip  (Python package installer)
+pip  (package installer of python)
 
 Django 
 
