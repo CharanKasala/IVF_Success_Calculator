@@ -11,7 +11,9 @@ Django
 
 ### Instructions to run:
 
-git clone https://github.com/CharanKasala/IVF_Success_Calculator.git
+clone the github repository to your local repository:
+
+    git clone https://github.com/CharanKasala/IVF_Success_Calculator.git
 
 
 cd ivf_success_calculator
